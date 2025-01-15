@@ -294,6 +294,19 @@ export interface Tag {
 /**
  * 
  * @export
+ * @interface TestFormObjectMultipartRequestMarker
+ */
+export interface TestFormObjectMultipartRequestMarker {
+    /**
+     * 
+     * @type {string}
+     * @memberof TestFormObjectMultipartRequestMarker
+     */
+    'name'?: string;
+}
+/**
+ * 
+ * @export
  * @interface TestQueryStyleDeepObjectExplodeTrueObjectAllOfQueryObjectParameter
  */
 export interface TestQueryStyleDeepObjectExplodeTrueObjectAllOfQueryObjectParameter {
@@ -428,9 +441,9 @@ export const AuthApiFp = function(configuration?: Configuration) {
          */
         async testAuthHttpBasic(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testAuthHttpBasic(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AuthApi.testAuthHttpBasic']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.testAuthHttpBasic']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * To test HTTP bearer authentication
@@ -440,9 +453,9 @@ export const AuthApiFp = function(configuration?: Configuration) {
          */
         async testAuthHttpBearer(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testAuthHttpBearer(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['AuthApi.testAuthHttpBearer']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AuthApi.testAuthHttpBearer']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -460,7 +473,7 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testAuthHttpBasic(options?: any): AxiosPromise<string> {
+        testAuthHttpBasic(options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testAuthHttpBasic(options).then((request) => request(axios, basePath));
         },
         /**
@@ -469,7 +482,7 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testAuthHttpBearer(options?: any): AxiosPromise<string> {
+        testAuthHttpBearer(options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testAuthHttpBearer(options).then((request) => request(axios, basePath));
         },
     };
@@ -621,6 +634,45 @@ export const BodyApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
+         * Test single binary in multipart mime
+         * @summary Test single binary in multipart mime
+         * @param {File} [myFile] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testBodyMultipartFormdataSingleBinary: async (myFile?: File, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/body/application/octetstream/single_binary`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+
+            if (myFile !== undefined) { 
+                localVarFormParams.append('my-file', myFile as any);
+            }
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Test body parameter(s)
          * @summary Test body parameter(s)
          * @param {Pet} [pet] Pet object that needs to be added to the store
@@ -757,6 +809,40 @@ export const BodyApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
+         * Test string enum response body
+         * @summary Test string enum response body
+         * @param {string} [body] String enum
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testEchoBodyStringEnum: async (body?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/echo/body/string_enum`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Test empty json (request body)
          * @summary Test empty json (request body)
          * @param {Tag} [tag] Tag object
@@ -808,9 +894,9 @@ export const BodyApiFp = function(configuration?: Configuration) {
          */
         async testBinaryGif(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<File>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testBinaryGif(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BodyApi.testBinaryGif']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BodyApi.testBinaryGif']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Test body parameter(s)
@@ -821,9 +907,9 @@ export const BodyApiFp = function(configuration?: Configuration) {
          */
         async testBodyApplicationOctetstreamBinary(body?: File, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testBodyApplicationOctetstreamBinary(body, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BodyApi.testBodyApplicationOctetstreamBinary']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BodyApi.testBodyApplicationOctetstreamBinary']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Test array of binary in multipart mime
@@ -834,9 +920,22 @@ export const BodyApiFp = function(configuration?: Configuration) {
          */
         async testBodyMultipartFormdataArrayOfBinary(files: Array<File>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testBodyMultipartFormdataArrayOfBinary(files, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BodyApi.testBodyMultipartFormdataArrayOfBinary']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BodyApi.testBodyMultipartFormdataArrayOfBinary']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Test single binary in multipart mime
+         * @summary Test single binary in multipart mime
+         * @param {File} [myFile] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async testBodyMultipartFormdataSingleBinary(myFile?: File, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.testBodyMultipartFormdataSingleBinary(myFile, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BodyApi.testBodyMultipartFormdataSingleBinary']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Test body parameter(s)
@@ -847,9 +946,9 @@ export const BodyApiFp = function(configuration?: Configuration) {
          */
         async testEchoBodyAllOfPet(pet?: Pet, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Pet>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testEchoBodyAllOfPet(pet, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BodyApi.testEchoBodyAllOfPet']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BodyApi.testEchoBodyAllOfPet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Test free form object
@@ -860,9 +959,9 @@ export const BodyApiFp = function(configuration?: Configuration) {
          */
         async testEchoBodyFreeFormObjectResponseString(body?: object, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testEchoBodyFreeFormObjectResponseString(body, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BodyApi.testEchoBodyFreeFormObjectResponseString']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BodyApi.testEchoBodyFreeFormObjectResponseString']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Test body parameter(s)
@@ -873,9 +972,9 @@ export const BodyApiFp = function(configuration?: Configuration) {
          */
         async testEchoBodyPet(pet?: Pet, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Pet>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testEchoBodyPet(pet, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BodyApi.testEchoBodyPet']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BodyApi.testEchoBodyPet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Test empty response body
@@ -886,9 +985,22 @@ export const BodyApiFp = function(configuration?: Configuration) {
          */
         async testEchoBodyPetResponseString(pet?: Pet, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testEchoBodyPetResponseString(pet, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BodyApi.testEchoBodyPetResponseString']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BodyApi.testEchoBodyPetResponseString']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Test string enum response body
+         * @summary Test string enum response body
+         * @param {string} [body] String enum
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async testEchoBodyStringEnum(body?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StringEnumRef>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.testEchoBodyStringEnum(body, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BodyApi.testEchoBodyStringEnum']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Test empty json (request body)
@@ -899,9 +1011,9 @@ export const BodyApiFp = function(configuration?: Configuration) {
          */
         async testEchoBodyTagResponseString(tag?: Tag, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testEchoBodyTagResponseString(tag, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['BodyApi.testEchoBodyTagResponseString']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BodyApi.testEchoBodyTagResponseString']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -919,7 +1031,7 @@ export const BodyApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testBinaryGif(options?: any): AxiosPromise<File> {
+        testBinaryGif(options?: RawAxiosRequestConfig): AxiosPromise<File> {
             return localVarFp.testBinaryGif(options).then((request) => request(axios, basePath));
         },
         /**
@@ -929,7 +1041,7 @@ export const BodyApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testBodyApplicationOctetstreamBinary(body?: File, options?: any): AxiosPromise<string> {
+        testBodyApplicationOctetstreamBinary(body?: File, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testBodyApplicationOctetstreamBinary(body, options).then((request) => request(axios, basePath));
         },
         /**
@@ -939,8 +1051,18 @@ export const BodyApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testBodyMultipartFormdataArrayOfBinary(files: Array<File>, options?: any): AxiosPromise<string> {
+        testBodyMultipartFormdataArrayOfBinary(files: Array<File>, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testBodyMultipartFormdataArrayOfBinary(files, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Test single binary in multipart mime
+         * @summary Test single binary in multipart mime
+         * @param {File} [myFile] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testBodyMultipartFormdataSingleBinary(myFile?: File, options?: RawAxiosRequestConfig): AxiosPromise<string> {
+            return localVarFp.testBodyMultipartFormdataSingleBinary(myFile, options).then((request) => request(axios, basePath));
         },
         /**
          * Test body parameter(s)
@@ -949,7 +1071,7 @@ export const BodyApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testEchoBodyAllOfPet(pet?: Pet, options?: any): AxiosPromise<Pet> {
+        testEchoBodyAllOfPet(pet?: Pet, options?: RawAxiosRequestConfig): AxiosPromise<Pet> {
             return localVarFp.testEchoBodyAllOfPet(pet, options).then((request) => request(axios, basePath));
         },
         /**
@@ -959,7 +1081,7 @@ export const BodyApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testEchoBodyFreeFormObjectResponseString(body?: object, options?: any): AxiosPromise<string> {
+        testEchoBodyFreeFormObjectResponseString(body?: object, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testEchoBodyFreeFormObjectResponseString(body, options).then((request) => request(axios, basePath));
         },
         /**
@@ -969,7 +1091,7 @@ export const BodyApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testEchoBodyPet(pet?: Pet, options?: any): AxiosPromise<Pet> {
+        testEchoBodyPet(pet?: Pet, options?: RawAxiosRequestConfig): AxiosPromise<Pet> {
             return localVarFp.testEchoBodyPet(pet, options).then((request) => request(axios, basePath));
         },
         /**
@@ -979,8 +1101,18 @@ export const BodyApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testEchoBodyPetResponseString(pet?: Pet, options?: any): AxiosPromise<string> {
+        testEchoBodyPetResponseString(pet?: Pet, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testEchoBodyPetResponseString(pet, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Test string enum response body
+         * @summary Test string enum response body
+         * @param {string} [body] String enum
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testEchoBodyStringEnum(body?: string, options?: RawAxiosRequestConfig): AxiosPromise<StringEnumRef> {
+            return localVarFp.testEchoBodyStringEnum(body, options).then((request) => request(axios, basePath));
         },
         /**
          * Test empty json (request body)
@@ -989,7 +1121,7 @@ export const BodyApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testEchoBodyTagResponseString(tag?: Tag, options?: any): AxiosPromise<string> {
+        testEchoBodyTagResponseString(tag?: Tag, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testEchoBodyTagResponseString(tag, options).then((request) => request(axios, basePath));
         },
     };
@@ -1038,6 +1170,18 @@ export class BodyApi extends BaseAPI {
     }
 
     /**
+     * Test single binary in multipart mime
+     * @summary Test single binary in multipart mime
+     * @param {File} [myFile] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BodyApi
+     */
+    public testBodyMultipartFormdataSingleBinary(myFile?: File, options?: RawAxiosRequestConfig) {
+        return BodyApiFp(this.configuration).testBodyMultipartFormdataSingleBinary(myFile, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * Test body parameter(s)
      * @summary Test body parameter(s)
      * @param {Pet} [pet] Pet object that needs to be added to the store
@@ -1083,6 +1227,18 @@ export class BodyApi extends BaseAPI {
      */
     public testEchoBodyPetResponseString(pet?: Pet, options?: RawAxiosRequestConfig) {
         return BodyApiFp(this.configuration).testEchoBodyPetResponseString(pet, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Test string enum response body
+     * @summary Test string enum response body
+     * @param {string} [body] String enum
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BodyApi
+     */
+    public testEchoBodyStringEnum(body?: string, options?: RawAxiosRequestConfig) {
+        return BodyApiFp(this.configuration).testEchoBodyStringEnum(body, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1149,6 +1305,47 @@ export const FormApiAxiosParamCreator = function (configuration?: Configuration)
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = localVarFormParams.toString();
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Test form parameter(s) for multipart schema
+         * @summary Test form parameter(s) for multipart schema
+         * @param {TestFormObjectMultipartRequestMarker} marker 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testFormObjectMultipart: async (marker: TestFormObjectMultipartRequestMarker, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'marker' is not null or undefined
+            assertParamExists('testFormObjectMultipart', 'marker', marker)
+            const localVarPath = `/form/object/multipart`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+
+            if (marker !== undefined) { 
+                localVarFormParams.append('marker', new Blob([JSON.stringify(marker)], { type: "application/json", }));
+            }
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1240,9 +1437,22 @@ export const FormApiFp = function(configuration?: Configuration) {
          */
         async testFormIntegerBooleanString(integerForm?: number, booleanForm?: boolean, stringForm?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testFormIntegerBooleanString(integerForm, booleanForm, stringForm, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['FormApi.testFormIntegerBooleanString']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FormApi.testFormIntegerBooleanString']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Test form parameter(s) for multipart schema
+         * @summary Test form parameter(s) for multipart schema
+         * @param {TestFormObjectMultipartRequestMarker} marker 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async testFormObjectMultipart(marker: TestFormObjectMultipartRequestMarker, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.testFormObjectMultipart(marker, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FormApi.testFormObjectMultipart']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Test form parameter(s) for oneOf schema
@@ -1258,9 +1468,9 @@ export const FormApiFp = function(configuration?: Configuration) {
          */
         async testFormOneof(form1?: string, form2?: number, form3?: string, form4?: boolean, id?: number, name?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testFormOneof(form1, form2, form3, form4, id, name, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['FormApi.testFormOneof']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FormApi.testFormOneof']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -1281,8 +1491,18 @@ export const FormApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testFormIntegerBooleanString(integerForm?: number, booleanForm?: boolean, stringForm?: string, options?: any): AxiosPromise<string> {
+        testFormIntegerBooleanString(integerForm?: number, booleanForm?: boolean, stringForm?: string, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testFormIntegerBooleanString(integerForm, booleanForm, stringForm, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Test form parameter(s) for multipart schema
+         * @summary Test form parameter(s) for multipart schema
+         * @param {TestFormObjectMultipartRequestMarker} marker 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testFormObjectMultipart(marker: TestFormObjectMultipartRequestMarker, options?: RawAxiosRequestConfig): AxiosPromise<string> {
+            return localVarFp.testFormObjectMultipart(marker, options).then((request) => request(axios, basePath));
         },
         /**
          * Test form parameter(s) for oneOf schema
@@ -1296,7 +1516,7 @@ export const FormApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testFormOneof(form1?: string, form2?: number, form3?: string, form4?: boolean, id?: number, name?: string, options?: any): AxiosPromise<string> {
+        testFormOneof(form1?: string, form2?: number, form3?: string, form4?: boolean, id?: number, name?: string, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testFormOneof(form1, form2, form3, form4, id, name, options).then((request) => request(axios, basePath));
         },
     };
@@ -1321,6 +1541,18 @@ export class FormApi extends BaseAPI {
      */
     public testFormIntegerBooleanString(integerForm?: number, booleanForm?: boolean, stringForm?: string, options?: RawAxiosRequestConfig) {
         return FormApiFp(this.configuration).testFormIntegerBooleanString(integerForm, booleanForm, stringForm, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Test form parameter(s) for multipart schema
+     * @summary Test form parameter(s) for multipart schema
+     * @param {TestFormObjectMultipartRequestMarker} marker 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FormApi
+     */
+    public testFormObjectMultipart(marker: TestFormObjectMultipartRequestMarker, options?: RawAxiosRequestConfig) {
+        return FormApiFp(this.configuration).testFormObjectMultipart(marker, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1373,34 +1605,29 @@ export const HeaderApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+
+    
             if (integerHeader != null) {
                 localVarHeaderParameter['integer_header'] = typeof integerHeader === 'string'
                     ? integerHeader
                     : JSON.stringify(integerHeader);
             }
-
             if (booleanHeader != null) {
                 localVarHeaderParameter['boolean_header'] = typeof booleanHeader === 'string'
                     ? booleanHeader
                     : JSON.stringify(booleanHeader);
             }
-
             if (stringHeader != null) {
                 localVarHeaderParameter['string_header'] = String(stringHeader);
             }
-
             if (enumNonrefStringHeader != null) {
                 localVarHeaderParameter['enum_nonref_string_header'] = String(enumNonrefStringHeader);
             }
-
             if (enumRefStringHeader != null) {
                 localVarHeaderParameter['enum_ref_string_header'] = typeof enumRefStringHeader === 'string'
                     ? enumRefStringHeader
                     : JSON.stringify(enumRefStringHeader);
             }
-
-
-    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -1433,9 +1660,9 @@ export const HeaderApiFp = function(configuration?: Configuration) {
          */
         async testHeaderIntegerBooleanStringEnums(integerHeader?: number, booleanHeader?: boolean, stringHeader?: string, enumNonrefStringHeader?: TestHeaderIntegerBooleanStringEnumsEnumNonrefStringHeaderEnum, enumRefStringHeader?: StringEnumRef, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testHeaderIntegerBooleanStringEnums(integerHeader, booleanHeader, stringHeader, enumNonrefStringHeader, enumRefStringHeader, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['HeaderApi.testHeaderIntegerBooleanStringEnums']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['HeaderApi.testHeaderIntegerBooleanStringEnums']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -1458,7 +1685,7 @@ export const HeaderApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testHeaderIntegerBooleanStringEnums(integerHeader?: number, booleanHeader?: boolean, stringHeader?: string, enumNonrefStringHeader?: TestHeaderIntegerBooleanStringEnumsEnumNonrefStringHeaderEnum, enumRefStringHeader?: StringEnumRef, options?: any): AxiosPromise<string> {
+        testHeaderIntegerBooleanStringEnums(integerHeader?: number, booleanHeader?: boolean, stringHeader?: string, enumNonrefStringHeader?: TestHeaderIntegerBooleanStringEnumsEnumNonrefStringHeaderEnum, enumRefStringHeader?: StringEnumRef, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testHeaderIntegerBooleanStringEnums(integerHeader, booleanHeader, stringHeader, enumNonrefStringHeader, enumRefStringHeader, options).then((request) => request(axios, basePath));
         },
     };
@@ -1573,9 +1800,9 @@ export const PathApiFp = function(configuration?: Configuration) {
          */
         async testsPathStringPathStringIntegerPathIntegerEnumNonrefStringPathEnumRefStringPath(pathString: string, pathInteger: number, enumNonrefStringPath: TestsPathStringPathStringIntegerPathIntegerEnumNonrefStringPathEnumRefStringPathEnumNonrefStringPathEnum, enumRefStringPath: StringEnumRef, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testsPathStringPathStringIntegerPathIntegerEnumNonrefStringPathEnumRefStringPath(pathString, pathInteger, enumNonrefStringPath, enumRefStringPath, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PathApi.testsPathStringPathStringIntegerPathIntegerEnumNonrefStringPathEnumRefStringPath']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PathApi.testsPathStringPathStringIntegerPathIntegerEnumNonrefStringPathEnumRefStringPath']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -1597,7 +1824,7 @@ export const PathApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testsPathStringPathStringIntegerPathIntegerEnumNonrefStringPathEnumRefStringPath(pathString: string, pathInteger: number, enumNonrefStringPath: TestsPathStringPathStringIntegerPathIntegerEnumNonrefStringPathEnumRefStringPathEnumNonrefStringPathEnum, enumRefStringPath: StringEnumRef, options?: any): AxiosPromise<string> {
+        testsPathStringPathStringIntegerPathIntegerEnumNonrefStringPathEnumRefStringPath(pathString: string, pathInteger: number, enumNonrefStringPath: TestsPathStringPathStringIntegerPathIntegerEnumNonrefStringPathEnumRefStringPathEnumNonrefStringPathEnum, enumRefStringPath: StringEnumRef, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testsPathStringPathStringIntegerPathIntegerEnumNonrefStringPathEnumRefStringPath(pathString, pathInteger, enumNonrefStringPath, enumRefStringPath, options).then((request) => request(axios, basePath));
         },
     };
@@ -1854,6 +2081,76 @@ export const QueryApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * Test query parameter(s)
          * @summary Test query parameter(s)
+         * @param {Array<number>} [queryObject] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testQueryStyleFormExplodeFalseArrayInteger: async (queryObject?: Array<number>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/query/style_form/explode_false/array_integer`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (queryObject) {
+                localVarQueryParameter['query_object'] = queryObject.join(COLLECTION_FORMATS.csv);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Test query parameter(s)
+         * @summary Test query parameter(s)
+         * @param {Array<string>} [queryObject] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testQueryStyleFormExplodeFalseArrayString: async (queryObject?: Array<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/query/style_form/explode_false/array_string`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (queryObject) {
+                localVarQueryParameter['query_object'] = queryObject.join(COLLECTION_FORMATS.csv);
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Test query parameter(s)
+         * @summary Test query parameter(s)
          * @param {TestQueryStyleFormExplodeTrueArrayStringQueryObjectParameter} [queryObject] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1982,9 +2279,9 @@ export const QueryApiFp = function(configuration?: Configuration) {
          */
         async testEnumRefString(enumNonrefStringQuery?: TestEnumRefStringEnumNonrefStringQueryEnum, enumRefStringQuery?: StringEnumRef, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testEnumRefString(enumNonrefStringQuery, enumRefStringQuery, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['QueryApi.testEnumRefString']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['QueryApi.testEnumRefString']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Test query parameter(s)
@@ -1997,9 +2294,9 @@ export const QueryApiFp = function(configuration?: Configuration) {
          */
         async testQueryDatetimeDateString(datetimeQuery?: string, dateQuery?: string, stringQuery?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testQueryDatetimeDateString(datetimeQuery, dateQuery, stringQuery, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['QueryApi.testQueryDatetimeDateString']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['QueryApi.testQueryDatetimeDateString']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Test query parameter(s)
@@ -2012,9 +2309,9 @@ export const QueryApiFp = function(configuration?: Configuration) {
          */
         async testQueryIntegerBooleanString(integerQuery?: number, booleanQuery?: boolean, stringQuery?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testQueryIntegerBooleanString(integerQuery, booleanQuery, stringQuery, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['QueryApi.testQueryIntegerBooleanString']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['QueryApi.testQueryIntegerBooleanString']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Test query parameter(s)
@@ -2025,9 +2322,9 @@ export const QueryApiFp = function(configuration?: Configuration) {
          */
         async testQueryStyleDeepObjectExplodeTrueObject(queryObject?: Pet, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testQueryStyleDeepObjectExplodeTrueObject(queryObject, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['QueryApi.testQueryStyleDeepObjectExplodeTrueObject']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['QueryApi.testQueryStyleDeepObjectExplodeTrueObject']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Test query parameter(s)
@@ -2038,9 +2335,35 @@ export const QueryApiFp = function(configuration?: Configuration) {
          */
         async testQueryStyleDeepObjectExplodeTrueObjectAllOf(queryObject?: TestQueryStyleDeepObjectExplodeTrueObjectAllOfQueryObjectParameter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testQueryStyleDeepObjectExplodeTrueObjectAllOf(queryObject, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['QueryApi.testQueryStyleDeepObjectExplodeTrueObjectAllOf']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['QueryApi.testQueryStyleDeepObjectExplodeTrueObjectAllOf']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Test query parameter(s)
+         * @summary Test query parameter(s)
+         * @param {Array<number>} [queryObject] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async testQueryStyleFormExplodeFalseArrayInteger(queryObject?: Array<number>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.testQueryStyleFormExplodeFalseArrayInteger(queryObject, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['QueryApi.testQueryStyleFormExplodeFalseArrayInteger']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Test query parameter(s)
+         * @summary Test query parameter(s)
+         * @param {Array<string>} [queryObject] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async testQueryStyleFormExplodeFalseArrayString(queryObject?: Array<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.testQueryStyleFormExplodeFalseArrayString(queryObject, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['QueryApi.testQueryStyleFormExplodeFalseArrayString']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Test query parameter(s)
@@ -2051,9 +2374,9 @@ export const QueryApiFp = function(configuration?: Configuration) {
          */
         async testQueryStyleFormExplodeTrueArrayString(queryObject?: TestQueryStyleFormExplodeTrueArrayStringQueryObjectParameter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testQueryStyleFormExplodeTrueArrayString(queryObject, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['QueryApi.testQueryStyleFormExplodeTrueArrayString']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['QueryApi.testQueryStyleFormExplodeTrueArrayString']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Test query parameter(s)
@@ -2064,9 +2387,9 @@ export const QueryApiFp = function(configuration?: Configuration) {
          */
         async testQueryStyleFormExplodeTrueObject(queryObject?: Pet, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testQueryStyleFormExplodeTrueObject(queryObject, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['QueryApi.testQueryStyleFormExplodeTrueObject']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['QueryApi.testQueryStyleFormExplodeTrueObject']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Test query parameter(s)
@@ -2077,9 +2400,9 @@ export const QueryApiFp = function(configuration?: Configuration) {
          */
         async testQueryStyleFormExplodeTrueObjectAllOf(queryObject?: DataQuery, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testQueryStyleFormExplodeTrueObjectAllOf(queryObject, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['QueryApi.testQueryStyleFormExplodeTrueObjectAllOf']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['QueryApi.testQueryStyleFormExplodeTrueObjectAllOf']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -2099,7 +2422,7 @@ export const QueryApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testEnumRefString(enumNonrefStringQuery?: TestEnumRefStringEnumNonrefStringQueryEnum, enumRefStringQuery?: StringEnumRef, options?: any): AxiosPromise<string> {
+        testEnumRefString(enumNonrefStringQuery?: TestEnumRefStringEnumNonrefStringQueryEnum, enumRefStringQuery?: StringEnumRef, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testEnumRefString(enumNonrefStringQuery, enumRefStringQuery, options).then((request) => request(axios, basePath));
         },
         /**
@@ -2111,7 +2434,7 @@ export const QueryApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testQueryDatetimeDateString(datetimeQuery?: string, dateQuery?: string, stringQuery?: string, options?: any): AxiosPromise<string> {
+        testQueryDatetimeDateString(datetimeQuery?: string, dateQuery?: string, stringQuery?: string, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testQueryDatetimeDateString(datetimeQuery, dateQuery, stringQuery, options).then((request) => request(axios, basePath));
         },
         /**
@@ -2123,7 +2446,7 @@ export const QueryApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testQueryIntegerBooleanString(integerQuery?: number, booleanQuery?: boolean, stringQuery?: string, options?: any): AxiosPromise<string> {
+        testQueryIntegerBooleanString(integerQuery?: number, booleanQuery?: boolean, stringQuery?: string, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testQueryIntegerBooleanString(integerQuery, booleanQuery, stringQuery, options).then((request) => request(axios, basePath));
         },
         /**
@@ -2133,7 +2456,7 @@ export const QueryApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testQueryStyleDeepObjectExplodeTrueObject(queryObject?: Pet, options?: any): AxiosPromise<string> {
+        testQueryStyleDeepObjectExplodeTrueObject(queryObject?: Pet, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testQueryStyleDeepObjectExplodeTrueObject(queryObject, options).then((request) => request(axios, basePath));
         },
         /**
@@ -2143,8 +2466,28 @@ export const QueryApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testQueryStyleDeepObjectExplodeTrueObjectAllOf(queryObject?: TestQueryStyleDeepObjectExplodeTrueObjectAllOfQueryObjectParameter, options?: any): AxiosPromise<string> {
+        testQueryStyleDeepObjectExplodeTrueObjectAllOf(queryObject?: TestQueryStyleDeepObjectExplodeTrueObjectAllOfQueryObjectParameter, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testQueryStyleDeepObjectExplodeTrueObjectAllOf(queryObject, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Test query parameter(s)
+         * @summary Test query parameter(s)
+         * @param {Array<number>} [queryObject] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testQueryStyleFormExplodeFalseArrayInteger(queryObject?: Array<number>, options?: RawAxiosRequestConfig): AxiosPromise<string> {
+            return localVarFp.testQueryStyleFormExplodeFalseArrayInteger(queryObject, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Test query parameter(s)
+         * @summary Test query parameter(s)
+         * @param {Array<string>} [queryObject] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testQueryStyleFormExplodeFalseArrayString(queryObject?: Array<string>, options?: RawAxiosRequestConfig): AxiosPromise<string> {
+            return localVarFp.testQueryStyleFormExplodeFalseArrayString(queryObject, options).then((request) => request(axios, basePath));
         },
         /**
          * Test query parameter(s)
@@ -2153,7 +2496,7 @@ export const QueryApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testQueryStyleFormExplodeTrueArrayString(queryObject?: TestQueryStyleFormExplodeTrueArrayStringQueryObjectParameter, options?: any): AxiosPromise<string> {
+        testQueryStyleFormExplodeTrueArrayString(queryObject?: TestQueryStyleFormExplodeTrueArrayStringQueryObjectParameter, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testQueryStyleFormExplodeTrueArrayString(queryObject, options).then((request) => request(axios, basePath));
         },
         /**
@@ -2163,7 +2506,7 @@ export const QueryApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testQueryStyleFormExplodeTrueObject(queryObject?: Pet, options?: any): AxiosPromise<string> {
+        testQueryStyleFormExplodeTrueObject(queryObject?: Pet, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testQueryStyleFormExplodeTrueObject(queryObject, options).then((request) => request(axios, basePath));
         },
         /**
@@ -2173,7 +2516,7 @@ export const QueryApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        testQueryStyleFormExplodeTrueObjectAllOf(queryObject?: DataQuery, options?: any): AxiosPromise<string> {
+        testQueryStyleFormExplodeTrueObjectAllOf(queryObject?: DataQuery, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.testQueryStyleFormExplodeTrueObjectAllOf(queryObject, options).then((request) => request(axios, basePath));
         },
     };
@@ -2249,6 +2592,30 @@ export class QueryApi extends BaseAPI {
      */
     public testQueryStyleDeepObjectExplodeTrueObjectAllOf(queryObject?: TestQueryStyleDeepObjectExplodeTrueObjectAllOfQueryObjectParameter, options?: RawAxiosRequestConfig) {
         return QueryApiFp(this.configuration).testQueryStyleDeepObjectExplodeTrueObjectAllOf(queryObject, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Test query parameter(s)
+     * @summary Test query parameter(s)
+     * @param {Array<number>} [queryObject] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof QueryApi
+     */
+    public testQueryStyleFormExplodeFalseArrayInteger(queryObject?: Array<number>, options?: RawAxiosRequestConfig) {
+        return QueryApiFp(this.configuration).testQueryStyleFormExplodeFalseArrayInteger(queryObject, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Test query parameter(s)
+     * @summary Test query parameter(s)
+     * @param {Array<string>} [queryObject] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof QueryApi
+     */
+    public testQueryStyleFormExplodeFalseArrayString(queryObject?: Array<string>, options?: RawAxiosRequestConfig) {
+        return QueryApiFp(this.configuration).testQueryStyleFormExplodeFalseArrayString(queryObject, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
