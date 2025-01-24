@@ -103,6 +103,11 @@ func (o *Category) SetName(v string) {
 	o.Name = v
 }
 
+// GetDefaultName returns the default value "default-name" of the Name field.
+func (o *Category) GetDefaultName() interface{}  {
+	return "default-name"
+}
+
 func (o Category) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -116,6 +121,9 @@ func (o Category) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Id) {
 		toSerialize["id"] = o.Id
 	}
+	if _, exists := toSerialize["name"]; !exists {
+		toSerialize["name"] = o.GetDefaultName()
+	}
 	toSerialize["name"] = o.Name
 
 	for key, value := range o.AdditionalProperties {
@@ -125,7 +133,7 @@ func (o Category) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *Category) UnmarshalJSON(bytes []byte) (err error) {
+func (o *Category) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -133,23 +141,41 @@ func (o *Category) UnmarshalJSON(bytes []byte) (err error) {
 		"name",
 	}
 
+	// defaultValueFuncMap captures the default values for required properties.
+	// These values are used when required properties are missing from the payload.
+	defaultValueFuncMap := map[string]func() interface{} {
+		"name": o.GetDefaultName,
+	}
+	var defaultValueApplied bool
 	allProperties := make(map[string]interface{})
 
-	err = json.Unmarshal(bytes, &allProperties)
+	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
 		return err;
 	}
 
 	for _, requiredProperty := range(requiredProperties) {
-		if _, exists := allProperties[requiredProperty]; !exists {
+		if value, exists := allProperties[requiredProperty]; !exists || value == "" {
+			if _, ok := defaultValueFuncMap[requiredProperty]; ok {
+				allProperties[requiredProperty] = defaultValueFuncMap[requiredProperty]()
+				defaultValueApplied = true
+			}
+		}
+		if value, exists := allProperties[requiredProperty]; !exists || value == ""{
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
 	}
 
+	if defaultValueApplied {
+		data, err = json.Marshal(allProperties)
+		if err != nil{
+			return err
+		}
+	}
 	varCategory := _Category{}
 
-	err = json.Unmarshal(bytes, &varCategory)
+	err = json.Unmarshal(data, &varCategory)
 
 	if err != nil {
 		return err
@@ -159,7 +185,7 @@ func (o *Category) UnmarshalJSON(bytes []byte) (err error) {
 
 	additionalProperties := make(map[string]interface{})
 
-	if err = json.Unmarshal(bytes, &additionalProperties); err == nil {
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "id")
 		delete(additionalProperties, "name")
 		o.AdditionalProperties = additionalProperties
