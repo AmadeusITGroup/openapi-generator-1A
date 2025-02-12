@@ -69,6 +69,7 @@ func (o *AppleReq) SetCultivar(v string) {
 	o.Cultivar = v
 }
 
+
 // GetMealy returns the Mealy field value if set, zero value otherwise.
 func (o *AppleReq) GetMealy() bool {
 	if o == nil || IsNil(o.Mealy) {
@@ -123,7 +124,7 @@ func (o AppleReq) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *AppleReq) UnmarshalJSON(bytes []byte) (err error) {
+func (o *AppleReq) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -131,23 +132,40 @@ func (o *AppleReq) UnmarshalJSON(bytes []byte) (err error) {
 		"cultivar",
 	}
 
+	// defaultValueFuncMap captures the default values for required properties.
+	// These values are used when required properties are missing from the payload.
+	defaultValueFuncMap := map[string]func() interface{} {
+	}
+	var defaultValueApplied bool
 	allProperties := make(map[string]interface{})
 
-	err = json.Unmarshal(bytes, &allProperties)
+	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
 		return err;
 	}
 
 	for _, requiredProperty := range(requiredProperties) {
-		if _, exists := allProperties[requiredProperty]; !exists {
+		if value, exists := allProperties[requiredProperty]; !exists || value == "" {
+			if _, ok := defaultValueFuncMap[requiredProperty]; ok {
+				allProperties[requiredProperty] = defaultValueFuncMap[requiredProperty]()
+				defaultValueApplied = true
+			}
+		}
+		if value, exists := allProperties[requiredProperty]; !exists || value == ""{
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
 	}
 
+	if defaultValueApplied {
+		data, err = json.Marshal(allProperties)
+		if err != nil{
+			return err
+		}
+	}
 	varAppleReq := _AppleReq{}
 
-	err = json.Unmarshal(bytes, &varAppleReq)
+	err = json.Unmarshal(data, &varAppleReq)
 
 	if err != nil {
 		return err
@@ -157,7 +175,7 @@ func (o *AppleReq) UnmarshalJSON(bytes []byte) (err error) {
 
 	additionalProperties := make(map[string]interface{})
 
-	if err = json.Unmarshal(bytes, &additionalProperties); err == nil {
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "cultivar")
 		delete(additionalProperties, "mealy")
 		o.AdditionalProperties = additionalProperties
