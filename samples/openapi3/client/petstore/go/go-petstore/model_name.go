@@ -71,6 +71,7 @@ func (o *Name) SetName(v int32) {
 	o.Name = v
 }
 
+
 // GetSnakeCase returns the SnakeCase field value if set, zero value otherwise.
 func (o *Name) GetSnakeCase() int32 {
 	if o == nil || IsNil(o.SnakeCase) {
@@ -195,7 +196,7 @@ func (o Name) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *Name) UnmarshalJSON(bytes []byte) (err error) {
+func (o *Name) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -203,23 +204,40 @@ func (o *Name) UnmarshalJSON(bytes []byte) (err error) {
 		"name",
 	}
 
+	// defaultValueFuncMap captures the default values for required properties.
+	// These values are used when required properties are missing from the payload.
+	defaultValueFuncMap := map[string]func() interface{} {
+	}
+	var defaultValueApplied bool
 	allProperties := make(map[string]interface{})
 
-	err = json.Unmarshal(bytes, &allProperties)
+	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
 		return err;
 	}
 
 	for _, requiredProperty := range(requiredProperties) {
-		if _, exists := allProperties[requiredProperty]; !exists {
+		if value, exists := allProperties[requiredProperty]; !exists || value == "" {
+			if _, ok := defaultValueFuncMap[requiredProperty]; ok {
+				allProperties[requiredProperty] = defaultValueFuncMap[requiredProperty]()
+				defaultValueApplied = true
+			}
+		}
+		if value, exists := allProperties[requiredProperty]; !exists || value == ""{
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
 	}
 
+	if defaultValueApplied {
+		data, err = json.Marshal(allProperties)
+		if err != nil{
+			return err
+		}
+	}
 	varName := _Name{}
 
-	err = json.Unmarshal(bytes, &varName)
+	err = json.Unmarshal(data, &varName)
 
 	if err != nil {
 		return err
@@ -229,7 +247,7 @@ func (o *Name) UnmarshalJSON(bytes []byte) (err error) {
 
 	additionalProperties := make(map[string]interface{})
 
-	if err = json.Unmarshal(bytes, &additionalProperties); err == nil {
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "name")
 		delete(additionalProperties, "snake_case")
 		delete(additionalProperties, "property")

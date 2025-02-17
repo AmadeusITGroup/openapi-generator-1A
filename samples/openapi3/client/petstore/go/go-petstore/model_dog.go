@@ -110,7 +110,7 @@ func (o Dog) ToMap() (map[string]interface{}, error) {
 	return toSerialize, nil
 }
 
-func (o *Dog) UnmarshalJSON(bytes []byte) (err error) {
+func (o *Dog) UnmarshalJSON(data []byte) (err error) {
 	// This validates that all required properties are included in the JSON object
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
@@ -118,27 +118,44 @@ func (o *Dog) UnmarshalJSON(bytes []byte) (err error) {
 		"className",
 	}
 
+	// defaultValueFuncMap captures the default values for required properties.
+	// These values are used when required properties are missing from the payload.
+	defaultValueFuncMap := map[string]func() interface{} {
+	}
+	var defaultValueApplied bool
 	allProperties := make(map[string]interface{})
 
-	err = json.Unmarshal(bytes, &allProperties)
+	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
 		return err;
 	}
 
 	for _, requiredProperty := range(requiredProperties) {
-		if _, exists := allProperties[requiredProperty]; !exists {
+		if value, exists := allProperties[requiredProperty]; !exists || value == "" {
+			if _, ok := defaultValueFuncMap[requiredProperty]; ok {
+				allProperties[requiredProperty] = defaultValueFuncMap[requiredProperty]()
+				defaultValueApplied = true
+			}
+		}
+		if value, exists := allProperties[requiredProperty]; !exists || value == ""{
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
 	}
 
+	if defaultValueApplied {
+		data, err = json.Marshal(allProperties)
+		if err != nil{
+			return err
+		}
+	}
 	type DogWithoutEmbeddedStruct struct {
 		Breed *string `json:"breed,omitempty"`
 	}
 
 	varDogWithoutEmbeddedStruct := DogWithoutEmbeddedStruct{}
 
-	err = json.Unmarshal(bytes, &varDogWithoutEmbeddedStruct)
+	err = json.Unmarshal(data, &varDogWithoutEmbeddedStruct)
 	if err == nil {
 		varDog := _Dog{}
 		varDog.Breed = varDogWithoutEmbeddedStruct.Breed
@@ -149,7 +166,7 @@ func (o *Dog) UnmarshalJSON(bytes []byte) (err error) {
 
 	varDog := _Dog{}
 
-	err = json.Unmarshal(bytes, &varDog)
+	err = json.Unmarshal(data, &varDog)
 	if err == nil {
 		o.Animal = varDog.Animal
 	} else {
@@ -158,7 +175,7 @@ func (o *Dog) UnmarshalJSON(bytes []byte) (err error) {
 
 	additionalProperties := make(map[string]interface{})
 
-	if err = json.Unmarshal(bytes, &additionalProperties); err == nil {
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "breed")
 
 		// remove fields from embedded structs
